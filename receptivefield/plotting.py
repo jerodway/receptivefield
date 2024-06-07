@@ -48,7 +48,7 @@ def _plot_rect(
             linewidth=linewidth,
         )
     )
-    plt.scatter([rect.y], [rect.x], s=size, c=color)
+    plt.scatter([rect.y], [rect.x], s=size, color=color)
 
 
 def plot_gradient_field(
@@ -116,6 +116,7 @@ def plot_receptive_grid(
     rf_params: ReceptiveFieldDescription,
     custom_image: Optional[np.ndarray] = None,
     plot_naive_rf: bool = False,
+    plot_grid: bool = False,
     axis: Optional[Any] = None,
     **plot_params
 ) -> None:
@@ -185,7 +186,8 @@ def plot_receptive_grid(
     ]
 
     points = np.array(points)
-    axis.scatter(points[:, 1], points[:, 0], marker="o", c=(0.2, 0.9, 0.1, 0.9), s=10)
+    if plot_grid:
+        axis.scatter(points[:, 1], points[:, 0], marker="o", c=(0.2, 0.9, 0.1, 0.9), s=10)
 
     # plot receptive field from corner point
     _plot_rect(

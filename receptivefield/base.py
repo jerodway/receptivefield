@@ -276,6 +276,7 @@ class ReceptiveField(metaclass=ABCMeta):
         fm_id: int,
         custom_image: Optional[np.ndarray] = None,
         plot_naive_rf: bool = False,
+        plot_grid: bool = False,
         **plot_params,
     ) -> None:
         """
@@ -301,6 +302,7 @@ class ReceptiveField(metaclass=ABCMeta):
             rf_params=self._rf_params[fm_id],
             custom_image=custom_image,
             plot_naive_rf=plot_naive_rf,
+            plot_grid=plot_grid,
             **plot_params,
         )
 
@@ -308,6 +310,7 @@ class ReceptiveField(metaclass=ABCMeta):
         self,
         custom_image: Optional[np.ndarray] = None,
         plot_naive_rf: bool = False,
+        plot_grid: bool = False,
         layout: Optional[Tuple[int, int]] = None,
         figsize: Optional[Tuple[int, int]] = None,
     ) -> None:
@@ -337,5 +340,6 @@ class ReceptiveField(metaclass=ABCMeta):
                 fm_id=fm,
                 custom_image=custom_image,
                 plot_naive_rf=plot_naive_rf,
+                plot_grid=plot_grid,
                 axis=axis,
             )
