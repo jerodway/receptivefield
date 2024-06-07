@@ -1,6 +1,6 @@
 from setuptools import setup
 
-VERSION = '0.5.0'
+VERSION = '0.5.1'
 
 setup(
     name='receptivefield',
@@ -13,9 +13,10 @@ setup(
     download_url=f'https://github.com/fornaxai/receptivefield/archive/{VERSION}.tar.gz',
     keywords=['tensorflow', 'pytorch'],
     install_requires=[
-        'pillow>=6.2.*',
-        'matplotlib>=3.1.*',
-        'numpy>=1.17.*',
+        'pillow>=6.2.0',
+        'matplotlib>=3.1.0',
+        'numpy>=1.17.0',
+        'lmfit>=1.3.0'
     ],
     classifiers=[],
     include_package_data=True
