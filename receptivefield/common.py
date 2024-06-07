@@ -5,6 +5,8 @@ import numpy as np
 from receptivefield.logging import get_logger
 from receptivefield.types import GridShape, ReceptiveFieldRect
 
+import lmfit
+
 _logger = get_logger()
 
 
@@ -66,19 +68,36 @@ def estimate_rf_from_gradient(receptive_field_grad: np.ndarray) -> ReceptiveFiel
     """
 
     receptive_field_grad = np.array(receptive_field_grad).mean(0).mean(-1)
-    binary_map: np.ndarray = (receptive_field_grad[:, :] > 0)
 
-    x_cs: np.ndarray = binary_map.sum(-1) >= 1
-    y_cs: np.ndarray = binary_map.sum(0) >= 1
+    x_orig = np.arange(0, receptive_field_grad.shape[1])
+    y_orig = np.arange(0, receptive_field_grad.shape[0])
+    X, Y = np.meshgrid(x_orig, y_orig)
+    flat_x = X.flatten()
+    flat_y = Y.flatten()
+    flat_z = receptive_field_grad.flatten()
+    model = lmfit.models.Gaussian2dModel()
+    params = model.guess(flat_z, flat_x, flat_y)
+    result = model.fit(flat_z, x=flat_x, y=flat_y, params=params)
 
-    x = np.arange(len(x_cs))
-    y = np.arange(len(y_cs))
 
-    width = x_cs.sum()
-    height = y_cs.sum()
+    # binary_map: np.ndarray = (receptive_field_grad[:, :] > 0)
+    #
+    # x_cs: np.ndarray = binary_map.sum(-1) >= 1
+    # y_cs: np.ndarray = binary_map.sum(0) >= 1
+    #
+    # x = np.arange(len(x_cs))
+    # y = np.arange(len(y_cs))
+    #
+    # width = x_cs.sum()
+    # height = y_cs.sum()
+    #
+    # x = np.sum(x * x_cs) / width
+    # y = np.sum(y * y_cs) / height
 
-    x = np.sum(x * x_cs) / width
-    y = np.sum(y * y_cs) / height
+    x = result.best_values['centerx']
+    y = result.best_values['centery']
+    width = result.best_values['sigmax']
+    height = result.best_values['sigmay']
 
     return ReceptiveFieldRect(x, y, width, height)
 

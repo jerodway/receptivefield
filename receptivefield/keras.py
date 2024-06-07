@@ -197,7 +197,7 @@ class KerasReceptiveField(ReceptiveField):
 
         receptive_field_grads = self._gradient_function(
             output_feature_maps,
-            tf.Variable(np.zeros(shape=input_shape).astype(np.float32)),
+            tf.Variable(np.ones(shape=input_shape).astype(np.float32)),
         )
 
         return receptive_field_grads
